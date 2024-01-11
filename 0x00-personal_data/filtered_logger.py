@@ -6,6 +6,7 @@ import re
 import logging
 import os
 import mysql.connector
+import mysql
 
 
 PII_FIELDS = ('name', 'email', 'phone', 'ssn', 'password')
