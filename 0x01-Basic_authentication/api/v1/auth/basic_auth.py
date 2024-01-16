@@ -78,3 +78,25 @@ class BasicAuth(Auth):
             return None
         except Exception:
             return None
+
+    def current_user(self, request=None) -> TypeVar('User'):
+        """
+        Returns a User instance based on a received request
+        """
+        Auth_header = self.authorization_header(request)
+        if Auth_header is None:
+            return None
+
+        token = self.extract_base64_authorization_header(Auth_header)
+        if token is None:
+            return None
+
+        decoded = self.decode_base64_authorization_header(token)
+        if decoded is None:
+            return None
+
+        email, pword = self.extract_user_credentials(decoded)
+        if email is None and pword is None:
+            return None
+
+        return self.user_object_from_credentials(email, pword)
