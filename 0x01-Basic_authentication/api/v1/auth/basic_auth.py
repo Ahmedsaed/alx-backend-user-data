@@ -3,6 +3,8 @@
 Definition of class BasicAuth
 """
 from .auth import Auth
+from typing import TypeVar
+import base64
 
 
 class BasicAuth(Auth):
@@ -22,3 +24,20 @@ class BasicAuth(Auth):
             return None
         token = authorization_header.split(" ")[-1]
         return token
+
+    def decode_base64_authorization_header(self,
+                                           base64_authorization_header:
+                                           str) -> str:
+        """
+        Decode a Base64-encoded string
+        """
+        if base64_authorization_header is None:
+            return None
+        if not isinstance(base64_authorization_header, str):
+            return None
+        try:
+            decoded = base64_authorization_header.encode('utf-8')
+            decoded = base64.b64decode(decoded)
+            return decoded.decode('utf-8')
+        except Exception:
+            return None
